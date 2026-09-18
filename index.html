@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bộ gõ Ê-đê</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 20px 14px 40px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    background: #f5f7f8;
+    color: #222;
+  }
+
+  .keyboard-box {
+    max-width: 520px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 20px;
+    padding: 18px;
+    box-shadow: 0 4px 18px rgba(0,0,0,.08);
+  }
+
+  .title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 14px;
+  }
+
+  /* Ô hiển thị chữ */
+  #edeOutput {
+    width: 100%;
+    min-height: 130px;
+    padding: 15px;
+    border: 2px solid #d9dee3;
+    border-radius: 14px;
+    background: #fafafa;
+    font-size: 20px;
+    line-height: 1.55;
+    word-break: break-word;
+    white-space: pre-wrap;
+    margin-bottom: 12px;
+  }
+
+  #edeOutput.empty {
+    color: #999;
+    font-size: 16px;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    border: 0;
+    border-radius: 11px;
+    min-height: 46px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .action-btn {
+    background: #eef1f3;
+    color: #222;
+  }
+
+  .copy-btn {
+    background: #347a45;
+    color: white;
+  }
+
+  .keys {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 7px;
+  }
+
+  .key {
+    background: #f0f2f4;
+    border: 1px solid #d9dde1;
+    font-size: 19px;
+    min-height: 48px;
+  }
+
+  .key:active,
+  .action-btn:active,
+  .copy-btn:active {
+    transform: scale(.96);
+  }
+
+  .space {
+    width: 100%;
+    margin-top: 9px;
+    background: #e7eaed;
+  }
+
+  .status {
+    text-align: center;
+    min-height: 22px;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #347a45;
+  }
+
+  @media (max-width: 380px) {
+    .keys {
+      grid-template-columns: repeat(5, 1fr);
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="keyboard-box">
+
+  <div class="title">
+    BỘ GÕ Ê-ĐÊ
+  </div>
+
+  <div class="subtitle">
+    Chạm phím để nhập chữ Ê-đê
+  </div>
+
+  <div id="edeOutput" class="empty">
+    Chữ Ê-đê sẽ hiển thị ở đây...
+  </div>
+
+  <div class="actions">
+    <button class="action-btn" type="button" onclick="deleteLastChar()">
+      ⌫
+    </button>
+
+    <button class="action-btn" type="button" onclick="clearAll()">
+      XÓA HẾT
+    </button>
+
+    <button class="copy-btn" type="button" onclick="copyText()">
+      📋 SAO CHÉP
+    </button>
+  </div>
+
+  <!-- CHỮ HOA -->
+  <div class="keys">
+    <button class="key" type="button" onclick="insertChar('Č')">Č</button>
+    <button class="key" type="button" onclick="insertChar('Ĕ')">Ĕ</button>
+    <button class="key" type="button" onclick="insertChar('Ě')">Ě</button>
+    <button class="key" type="button" onclick="insertChar('Ĭ')">Ĭ</button>
+    <button class="key" type="button" onclick="insertChar('Ŏ')">Ŏ</button>
+    <button class="key" type="button" onclick="insertChar('Ŭ')">Ŭ</button>
+    <button class="key" type="button" onclick="insertChar('Ƀ')">Ƀ</button>
+    <button class="key" type="button" onclick="insertChar('Ñ')">Ñ</button>
+    <button class="key" type="button" onclick="insertChar('Ň')">Ň</button>
+  </div>
+
+  <!-- CHỮ THƯỜNG -->
+  <div class="keys" style="margin-top:7px;">
+    <button class="key" type="button" onclick="insertChar('č')">č</button>
+    <button class="key" type="button" onclick="insertChar('ĕ')">ĕ</button>
+    <button class="key" type="button" onclick="insertChar('ě')">ě</button>
+    <button class="key" type="button" onclick="insertChar('ĭ')">ĭ</button>
+    <button class="key" type="button" onclick="insertChar('ŏ')">ŏ</button>
+    <button class="key" type="button" onclick="insertChar('ŭ')">ŭ</button>
+    <button class="key" type="button" onclick="insertChar('ƀ')">ƀ</button>
+    <button class="key" type="button" onclick="insertChar('ñ')">ñ</button>
+    <button class="key" type="button" onclick="insertChar('ň')">ň</button>
+  </div>
+
+  <button class="space" type="button" onclick="insertChar(' ')">
+    DẤU CÁCH
+  </button>
+
+  <div id="status" class="status"></div>
+
+</div>
+
+<script>
+  let edeText = "";
+
+  const output = document.getElementById("edeOutput");
+  const status = document.getElementById("status");
+
+  function renderText() {
+    if (edeText.length === 0) {
+      output.textContent = "Chữ Ê-đê sẽ hiển thị ở đây...";
+      output.classList.add("empty");
+    } else {
+      output.textContent = edeText;
+      output.classList.remove("empty");
+    }
+  }
+
+  function insertChar(char) {
+    edeText += char;
+    renderText();
+    status.textContent = "";
+  }
+
+  function deleteLastChar() {
+    if (edeText.length > 0) {
+      edeText = Array.from(edeText).slice(0, -1).join("");
+      renderText();
+    }
+    status.textContent = "";
+  }
+
+  function clearAll() {
+    edeText = "";
+    renderText();
+    status.textContent = "";
+  }
+
+  async function copyText() {
+    if (!edeText) {
+      status.textContent = "Chưa có nội dung để sao chép.";
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(edeText);
+      status.textContent = "Đã sao chép chữ Ê-đê.";
+    } catch (error) {
+      /* Phương án dự phòng */
+      const temp = document.createElement("textarea");
+      temp.value = edeText;
+      temp.style.position = "fixed";
+      temp.style.left = "-9999px";
+      document.body.appendChild(temp);
+      temp.select();
+
+      try {
+        document.execCommand("copy");
+        status.textContent = "Đã sao chép chữ Ê-đê.";
+      } catch (e) {
+        status.textContent = "Không thể sao chép tự động.";
+      }
+
+      document.body.removeChild(temp);
+    }
+  }
+
+  renderText();
+</script>
+
+</body>
+</html>
