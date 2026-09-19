@@ -1,0 +1,26 @@
+{
+  "name": "Bộ gõ Ê-đê",
+  "short_name": "Bộ gõ Ê-đê",
+  "description": "Bộ gõ Ê-đê độc lập · Sản phẩm của Phan Thuý Hằng ♥ Buôn Hồ",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4ede5",
+  "theme_color": "#4b2e1f",
+  "lang": "vi",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#17633f">
+<title>Bộ gõ Ê-đê</title>
+<style>
+:root{
+  --green:#6b4226;
+  --green2:#8a5a36;
+  --light:#f8efe4;
+  --border:#d8c1aa;
+  --text:#3e2a1f;
+  --muted:#7d6a5d;
+  --gold:#c99a52;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#f4ede5;color:var(--text);
+  font-family:Arial,"Noto Sans","DejaVu Sans",sans-serif}
+body{min-height:100vh}
+.app{width:min(100%,520px);margin:0 auto;padding:14px 12px 28px}
+.header{
+  padding:18px 14px 15px;border-radius:20px;
+  background:linear-gradient(135deg,#4b2e1f,#8a5a36);
+  color:#fff;box-shadow:0 7px 18px rgba(78,48,29,.16)
+}
+.header h1{margin:3px 0 0;text-align:center;font-size:21px;line-height:1.2;letter-spacing:.4px}
+.header p{margin:7px 0 0;text-align:center;font-size:12px;line-height:1.45;opacity:.92}
+.card{
+  margin-top:12px;padding:11px;border:1px solid var(--border);
+  border-radius:17px;background:linear-gradient(180deg,#f8efe4,#fffaf4);
+  box-shadow:0 5px 15px rgba(91,58,35,.08)
+}
+.help{text-align:center;color:var(--muted);font-size:11px;line-height:1.45;margin:0 0 8px}
+textarea{
+  display:block;width:100%;min-height:150px;max-height:280px;
+  padding:12px;border:2px solid #6ba88b;border-radius:13px;
+  background:#fff;color:var(--text);font-size:18px;line-height:1.5;
+  font-family:Arial,"Noto Sans","DejaVu Sans",sans-serif;
+  resize:vertical;outline:none;white-space:pre-wrap;overflow-wrap:anywhere;
+  -webkit-appearance:none;appearance:none
+}
+textarea::placeholder{color:#7a9187;opacity:.9}
+textarea:focus{border-color:var(--green2);box-shadow:0 0 0 3px rgba(47,139,99,.12)}
+.actions{display:flex;gap:6px;margin-top:7px}
+.action{
+  flex:1;min-height:40px;border:1px solid var(--border);border-radius:9px;
+  background:#fffaf4;color:var(--green);font-size:12px;font-weight:900;
+  cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent
+}
+.action:active,.key:active{transform:scale(.96);background:#f2e3d3}
+.copy{background:var(--green);color:#fffaf4;border-color:var(--green)}
+.status{min-height:20px;margin-top:5px;text-align:center;font-size:11px;font-weight:800;color:#76502f}
+.row{display:flex;gap:5px;margin-top:7px;justify-content:center;flex-wrap:nowrap}
+.key{
+  appearance:none;-webkit-appearance:none;margin:0;min-width:34px;height:42px;
+  padding:0 6px;border:1px solid var(--border);border-radius:9px;
+  background:#fffaf4;color:var(--green);font-size:17px;font-weight:800;
+  display:inline-flex;align-items:center;justify-content:center;
+  cursor:pointer;user-select:none;-webkit-user-select:none;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent
+}
+.upper .key{background:#f7ead5;border-color:var(--gold);color:#70451f}
+.space{flex:1;max-width:230px;font-size:12px!important}
+.note{
+  margin-top:12px;padding:11px 12px;border-radius:13px;
+  background:#fffaf4;border:1px solid #e1cfbc;color:#665347;
+  font-size:11px;line-height:1.5
+}
+.note b{color:var(--green)}
+.footer{text-align:center;color:#8b7668;font-size:10px;line-height:1.5;margin:15px 0 0}.footer-heart{color:#9b6047;padding:0 3px;font-size:10px}
+@media(max-width:390px){
+  .app{padding-left:9px;padding-right:9px}
+  .key{min-width:31px;height:39px;font-size:15px;padding:0 4px}
+  textarea{font-size:17px}
+  .action{font-size:11px}
+}
+</style>
+
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bộ gõ Ê-đê">
+<meta name="theme-color" content="#4b2e1f">
+</head>
+<body>
+<main class="app">
+  <header class="header">
+    <h1>BỘ GÕ Ê-ĐÊ</h1>
+    <p>Công cụ nhập các ký tự đặc biệt trong chữ Ê-đê</p>
+  </header>
+
+  <section class="card">
+    <p class="help">Chạm vào ô nhập để mở bàn phím điện thoại. Các phím bên dưới dùng để chèn ký tự Ê-đê tại vị trí con trỏ.</p>
+
+    <textarea id="edeCompose" aria-label="Nội dung Ê-đê đang gõ"
+      placeholder="Chạm để nhập chữ Ê-đê" rows="5" spellcheck="false"
+      autocapitalize="sentences"></textarea>
+
+    <div class="actions">
+      <button type="button" class="action" id="edeDelete" aria-label="Xóa ký tự cuối">⌫ XÓA KÝ TỰ</button>
+      <button type="button" class="action" id="edeClear">XÓA HẾT</button>
+      <button type="button" class="action copy" id="edeCopy">📋 SAO CHÉP</button>
+    </div>
+
+    <div id="edeCopyStatus" class="status" role="status" aria-live="polite"></div>
+
+    <div class="row upper" aria-label="Ký tự Ê-đê viết hoa">
+      <button type="button" class="key" data-ede-char="Č">Č</button>
+      <button type="button" class="key" data-ede-char="Ĕ">Ĕ</button>
+      <button type="button" class="key" data-ede-char="Ě">Ě</button>
+      <button type="button" class="key" data-ede-char="Ĭ">Ĭ</button>
+      <button type="button" class="key" data-ede-char="Ŏ">Ŏ</button>
+      <button type="button" class="key" data-ede-char="Ŭ">Ŭ</button>
+      <button type="button" class="key" data-ede-char="Ƀ">Ƀ</button>
+      <button type="button" class="key" data-ede-char="Ñ">Ñ</button>
+      <button type="button" class="key" data-ede-char="Ň">Ň</button>
+    </div>
+
+    <div class="row" aria-label="Ký tự Ê-đê viết thường">
+      <button type="button" class="key" data-ede-char="č">č</button>
+      <button type="button" class="key" data-ede-char="ĕ">ĕ</button>
+      <button type="button" class="key" data-ede-char="ě">ě</button>
+      <button type="button" class="key" data-ede-char="ĭ">ĭ</button>
+      <button type="button" class="key" data-ede-char="ŏ">ŏ</button>
+      <button type="button" class="key" data-ede-char="ŭ">ŭ</button>
+      <button type="button" class="key" data-ede-char="ƀ">ƀ</button>
+      <button type="button" class="key" data-ede-char="ñ">ñ</button>
+      <button type="button" class="key" data-ede-char="ň">ň</button>
+    </div>
+
+    <div class="row">
+      <button type="button" class="key space">DẤU CÁCH</button>
+    </div>
+  </section>
+
+  <section class="note">
+    <b>Cách dùng:</b> Gõ nội dung bằng bàn phím điện thoại → chạm các phím đặc biệt khi cần →
+    chạm <b>SAO CHÉP</b> → dán vào Word, Google Form, tin nhắn hoặc nơi cần nhập chữ Ê-đê.
+  </section>
+
+  <div class="footer">Bộ gõ Ê-đê độc lập · Sản phẩm của Phan Thuý Hằng <span class="footer-heart">♥</span> Buôn Hồ</div>
+</main>
+
+<script>
+(function(){
+  const keyboard = document.querySelector('.card');
+  const compose = document.getElementById('edeCompose');
+  const status = document.getElementById('edeCopyStatus');
+
+  function insert(ch){
+    let start = compose.selectionStart, end = compose.selectionEnd;
+    if(start == null || end == null) start = end = compose.value.length;
+    compose.setRangeText(String(ch), start, end, 'end');
+    compose.dispatchEvent(new Event('input', {bubbles:true}));
+    status.textContent = '';
+  }
+
+  function deleteLast(){
+    let start = compose.selectionStart, end = compose.selectionEnd;
+    if(start == null || end == null) start = end = compose.value.length;
+
+    if(start !== end){
+      compose.setRangeText('', start, end, 'end');
+    }else if(start > 0){
+      const chars = Array.from(compose.value.slice(0,start));
+      const last = chars.length ? chars[chars.length - 1] : '';
+      compose.setRangeText('', start - last.length, start, 'end');
+    }
+    compose.dispatchEvent(new Event('input', {bubbles:true}));
+    status.textContent = '';
+  }
+
+  function clearAll(){
+    compose.value = '';
+    compose.dispatchEvent(new Event('input', {bubbles:true}));
+    status.textContent = '';
+  }
+
+  function copyText(){
+    const text = compose.value || '';
+    if(!text){
+      status.textContent = 'Chưa có chữ để sao chép.';
+      return;
+    }
+
+    const done = () => {
+      status.textContent = '✓ Đã sao chép. Bạn có thể dán vào nơi cần nhập.';
+    };
+
+    const fallback = () => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly','');
+      ta.style.position='fixed';
+      ta.style.left='-9999px';
+      ta.style.top='0';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      let ok = false;
+      try { ok = document.execCommand('copy'); } catch(e) {}
+      ta.remove();
+      if(ok) done();
+      else status.textContent = 'Không thể sao chép tự động. Hãy chạm giữ vào chữ để sao chép.';
+    };
+
+    if(navigator.clipboard && typeof navigator.clipboard.writeText === 'function' && window.isSecureContext){
+      navigator.clipboard.writeText(text).then(done).catch(fallback);
+    }else{
+      fallback();
+    }
+  }
+
+  keyboard.addEventListener('pointerdown', function(e){
+    const btn = e.target.closest('button');
+    if(!btn || !keyboard.contains(btn)) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    if(btn.id === 'edeDelete') deleteLast();
+    else if(btn.id === 'edeClear') clearAll();
+    else if(btn.id === 'edeCopy') copyText();
+    else if(btn.dataset.edeChar != null) insert(btn.dataset.edeChar);
+    else if(btn.classList.contains('space')) insert(' ');
+  }, true);
+
+  keyboard.addEventListener('click', function(e){
+    const btn = e.target.closest('button');
+    if(btn){ e.preventDefault(); e.stopPropagation(); }
+  }, true);
+
+  compose.addEventListener('focus', () => status.textContent = '');
+  compose.addEventListener('input', () => status.textContent = '');
+})();
+</script>
+
+<script>if ("serviceWorker" in navigator) { window.addEventListener("load", function(){ navigator.serviceWorker.register("./sw.js").catch(function(){}); }); }</script>
+</body>
+</html>
