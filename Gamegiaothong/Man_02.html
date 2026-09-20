@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Thám tử giao thông — Màn 02</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eef3f7;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:#18232d}
+.app{max-width:760px;margin:auto;min-height:100vh;background:#fff}.top{background:#123a5a;color:#fff;padding:16px}.topline{display:flex;justify-content:space-between}.brand{font-size:19px;font-weight:900}.case{font-size:13px;opacity:.8}.stats{display:flex;gap:8px;margin-top:12px}.stat{background:#ffffff18;border:1px solid #ffffff28;border-radius:11px;padding:7px 10px;font-size:13px}.stat b{font-size:16px}
+main{padding:12px}.mission{background:#fff8dc;border:1px solid #e5d48b;border-radius:13px;padding:12px;font-size:14px;line-height:1.4;margin-bottom:12px}
+.scene{border:2px solid #cbd5de;border-radius:16px;overflow:hidden;background:#dcecff}svg{display:block;width:100%;height:auto}.hit{cursor:pointer}.hit.selected{filter:drop-shadow(0 0 7px #ffae00)}
+#msg{margin-top:12px;padding:12px;border-radius:12px;background:#f1f4f6;min-height:48px;font-size:14px;font-weight:700;line-height:1.4}.ok{background:#e5f7ea!important;color:#176a37}.bad{background:#ffeded!important;color:#9b2720}
+.actions{display:flex;gap:8px;margin-top:10px}.actions button{flex:1;border:0;border-radius:11px;padding:12px;font-weight:800}.hint{background:#fff0b5}.next{background:#123a5a;color:#fff}.sound{background:#e7edf2}
+.overlay,.finish{position:fixed;inset:0;background:#123a5aee;display:flex;align-items:center;justify-content:center;padding:20px;z-index:10}.card{max-width:430px;width:100%;background:#fff;border-radius:22px;padding:25px;text-align:center}.emoji{font-size:48px}.card h1{color:#123a5a;margin:8px 0}.card p{line-height:1.5;color:#596773}.start{border:0;background:#123a5a;color:#fff;border-radius:12px;padding:14px;width:100%;font-weight:900;font-size:16px}.finish{display:none}.finish.show{display:flex}.score{font-size:40px;font-weight:900;color:#123a5a}.nextcase{border:0;background:#123a5a;color:#fff;border-radius:11px;padding:13px 20px;font-weight:900}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+ <div class="topline"><div><div class="brand">🕵️ THÁM TỬ GIAO THÔNG</div><div class="case">Hồ sơ #002 · Màn 02</div></div><button id="soundBtn" class="sound" style="border:0;border-radius:10px;padding:8px 10px">🔊</button></div>
+ <div class="stats"><div class="stat">Phát hiện <b id="found">0/3</b></div><div class="stat">Lượt còn <b id="tries">7</b></div><div class="stat">Điểm <b id="score">0</b></div></div>
+</header>
+<main>
+<div class="mission"><b>Nhiệm vụ:</b> Tìm 3 hành vi vi phạm. Màn này có thêm <b>xe quay đầu sai quy định</b> và <b>xe dừng trên vạch dành cho người đi bộ</b>. Hãy nhìn cả vị trí lẫn trạng thái.</div>
+<div class="scene">
+<svg viewBox="0 0 1000 600" aria-label="Hiện trường giao thông màn 2">
+<rect width="1000" height="600" fill="#c5e6ff"/>
+<!-- buildings -->
+<g fill="#decdb3"><rect x="0" y="80" width="180" height="185"/><rect x="205" y="55" width="165" height="210"/><rect x="400" y="95" width="175" height="170"/><rect x="610" y="65" width="175" height="200"/><rect x="820" y="100" width="180" height="165"/></g>
+<g fill="#8ec5df"><rect x="25" y="110" width="45" height="55"/><rect x="95" y="110" width="45" height="55"/><rect x="230" y="90" width="45" height="55"/><rect x="305" y="90" width="45" height="55"/><rect x="425" y="130" width="45" height="55"/><rect x="500" y="130" width="45" height="55"/><rect x="635" y="105" width="45" height="55"/><rect x="710" y="105" width="45" height="55"/><rect x="850" y="140" width="45" height="55"/><rect x="925" y="140" width="45" height="55"/></g>
+<!-- road -->
+<rect y="265" width="1000" height="335" fill="#555b62"/><path d="M0 430H1000" stroke="#f7d95b" stroke-width="6" stroke-dasharray="45 35"/>
+<!-- pedestrian crossing -->
+<g stroke="white" stroke-width="24"><path d="M370 265H610M370 305H610M370 345H610M370 385H610"/></g>
+<!-- sign no U-turn -->
+<g transform="translate(105 205)"><rect x="-5" y="35" width="10" height="80" fill="#555"/><circle cy="25" r="34" fill="#fff" stroke="#d52d2d" stroke-width="7"/><path d="M-15 30Q-12 0 18 0" fill="none" stroke="#d52d2d" stroke-width="8"/><path d="M18 0L8 -10M18 0L8 10" stroke="#d52d2d" stroke-width="7"/><path d="M15 30Q12 55 -18 55" fill="none" stroke="#d52d2d" stroke-width="8"/><text x="-44" y="-20" font-size="17" font-weight="900">CẤM QUAY ĐẦU</text></g>
+<!-- traffic light green -->
+<g transform="translate(700 185)"><rect x="-8" y="60" width="16" height="130" fill="#34383d"/><rect x="-38" y="-5" width="76" height="125" rx="12" fill="#24282c"/><circle cy="20" r="18" fill="#555"/><circle cy="58" r="18" fill="#555"/><circle cy="96" r="18" fill="#27a957"/><text x="-45" y="-20" font-size="18" font-weight="900" fill="#176a37">ĐÈN XANH</text></g>
+
+<!-- car stopped on crosswalk: violation -->
+<g class="hit" data-good="1" data-name="Ô TÔ DỪNG TRÊN VẠCH QUA ĐƯỜNG" tabindex="0">
+<rect x="395" y="350" width="220" height="78" rx="18" fill="#d94a45" stroke="#8d2722" stroke-width="4"/><path d="M430 350L465 315H545L580 350Z" fill="#d94a45" stroke="#8d2722" stroke-width="4"/><rect x="472" y="323" width="58" height="25" fill="#bde3f2" stroke="#8d2722" stroke-width="3"/>
+<circle cx="445" cy="428" r="22" fill="#20252a"/><circle cx="565" cy="428" r="22" fill="#20252a"/><circle cx="445" cy="428" r="9" fill="#c4c9ce"/><circle cx="565" cy="428" r="9" fill="#c4c9ce"/>
+<text x="425" y="385" fill="#fff" font-size="17" font-weight="900">Ô TÔ</text><text x="420" y="455" fill="#fff" font-size="14" font-weight="900">DỪNG • DỪNG</text></g>
+
+<!-- motorcycle turning where prohibited -->
+<g class="hit" data-good="1" data-name="XE MÁY QUAY ĐẦU TẠI NƠI CÓ BIỂN CẤM QUAY ĐẦU" tabindex="0">
+<circle cx="160" cy="500" r="25" fill="#20252a"/><circle cx="240" cy="500" r="25" fill="#20252a"/><circle cx="160" cy="500" r="10" fill="#c4c9ce"/><circle cx="240" cy="500" r="10" fill="#c4c9ce"/>
+<path d="M160 500L185 460H225L240 500L210 500L190 500Z" fill="#f28c28" stroke="#6d3b0c" stroke-width="4"/><path d="M210 460L225 440L240 440" stroke="#6d3b0c" stroke-width="6" fill="none"/><circle cx="205" cy="425" r="17" fill="#c68663"/><path d="M188 423Q205 395 222 423" fill="#171717"/><path d="M205 442L195 475L225 475" stroke="#244b70" stroke-width="12"/><path d="M195 455L180 475M220 455L235 475" stroke="#244b70" stroke-width="10"/>
+<path d="M275 475Q330 440 275 405" fill="none" stroke="#ffcf33" stroke-width="8"/><path d="M275 405L290 410L280 425" fill="none" stroke="#ffcf33" stroke-width="8"/><text x="140" y="550" fill="#fff" font-size="14" font-weight="900">QUAY ĐẦU ↩</text></g>
+
+<!-- pedestrian crossing legally -->
+<g class="hit" data-good="0" data-name="NGƯỜI ĐI BỘ ĐANG QUA ĐƯỜNG ĐÚNG VẠCH" tabindex="0">
+<circle cx="735" cy="355" r="21" fill="#c68663"/><path d="M714 355Q735 323 756 355" fill="#171717"/><path d="M735 376L718 425M735 376L752 425" stroke="#273b52" stroke-width="11" stroke-linecap="round"/><path d="M727 386L705 402M743 386L765 402" stroke="#c68663" stroke-width="9" stroke-linecap="round"/><path d="M765 405H805" stroke="#ffcf33" stroke-width="7"/><text x="690" y="452" fill="#fff" font-size="14" font-weight="900">QUA ĐƯỜNG ĐÚNG VẠCH</text></g>
+
+<!-- bicycle moving correctly -->
+<g class="hit" data-good="0" data-name="XE ĐẠP ĐANG DI CHUYỂN BÌNH THƯỜNG" tabindex="0">
+<circle cx="720" cy="510" r="28" fill="none" stroke="#111" stroke-width="6"/><circle cx="800" cy="510" r="28" fill="none" stroke="#111" stroke-width="6"/><path d="M720 510L750 470L775 510L720 510L760 510M750 470L800 510M750 470L735 470" fill="none" stroke="#2373a8" stroke-width="6"/><circle cx="755" cy="445" r="14" fill="#c68663"/><path d="M740 445Q755 425 770 445" fill="#171717"/><path d="M755 460L750 482L770 495M750 482L735 495M770 495L788 480" stroke="#8b5a3c" stroke-width="8"/><path d="M830 485H875" stroke="#ffcf33" stroke-width="7"/><path d="M865 472L885 485L865 498" fill="none" stroke="#ffcf33" stroke-width="7"/><text x="715" y="570" fill="#fff" font-size="14" font-weight="900">XE ĐẠP →</text></g>
+
+<!-- safe car -->
+<g class="hit" data-good="0" data-name="Ô TÔ ĐANG ĐI THẲNG KHI ĐÈN XANH" tabindex="0">
+<rect x="50" y="285" width="210" height="75" rx="18" fill="#2d76c7" stroke="#174777" stroke-width="4"/><path d="M90 285L125 250H205L235 285Z" fill="#2d76c7" stroke="#174777" stroke-width="4"/><rect x="135" y="258" width="58" height="24" fill="#bde3f2" stroke="#174777" stroke-width="3"/><circle cx="100" cy="360" r="22" fill="#20252a"/><circle cx="215" cy="360" r="22" fill="#20252a"/><circle cx="100" cy="360" r="9" fill="#c4c9ce"/><circle cx="215" cy="360" r="9" fill="#c4c9ce"/><path d="M265 315H315" stroke="#ffcf33" stroke-width="8"/><path d="M305 300L325 315L305 330" fill="none" stroke="#ffcf33" stroke-width="8"/><text x="90" y="320" fill="#fff" font-size="17" font-weight="900">Ô TÔ →</text></g>
+</svg>
+</div>
+<div id="msg">🔎 Hãy tìm 3 hành vi vi phạm.</div>
+<div class="actions"><button class="hint" id="hint">💡 Gợi ý</button><button class="sound" id="sound">🔊 Âm thanh</button></div>
+</main>
+</div>
+
+<div class="overlay" id="intro"><div class="card"><div class="emoji">🕵️</div><h1>MÀN 02</h1><p>Hiện trường mới, 3 lỗi mới.<br><b>Bấm BẮT ĐẦU</b> để bật nhạc nền và bắt đầu điều tra.</p><button class="start" id="start">BẮT ĐẦU ĐIỀU TRA 🎵</button></div></div>
+<div class="finish" id="finish"><div class="card"><div class="emoji">🎉</div><h1>PHÁ ÁN!</h1><div class="score" id="finalScore">0 điểm</div><p>Bạn đã tìm đủ 3 hành vi vi phạm.</p><button class="nextcase" id="again">CHƠI LẠI MÀN 02</button></div></div>
+
+<script>
+let found=0,tries=7,score=0,ctx=null,master=null,melodyTimer=null,soundOn=true,started=false;
+const $=id=>document.getElementById(id),msg=$('msg');
+function audioStart(){
+ if(!soundOn)return;
+ if(!ctx){ctx=new (window.AudioContext||window.webkitAudioContext)();master=ctx.createGain();master.gain.value=.055;master.connect(ctx.destination);}
+ if(ctx.state==='suspended')ctx.resume();
+ if(!melodyTimer){
+  const notes=[261.63,329.63,392,329.63,293.66,349.23,440,392];
+  let i=0;
+  melodyTimer=setInterval(()=>{if(!soundOn)return;const o=ctx.createOscillator(),g=ctx.createGain();o.type='triangle';o.frequency.value=notes[i++%notes.length];g.gain.setValueAtTime(.0001,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.16,ctx.currentTime+.03);g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+.28);o.connect(g);g.connect(master);o.start();o.stop(ctx.currentTime+.3)},360);
+ }
+}
+function beep(freq=520,dur=.12){
+ if(!ctx||!soundOn)return;const o=ctx.createOscillator(),g=ctx.createGain();o.frequency.value=freq;o.type='sine';g.gain.setValueAtTime(.001,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.18,ctx.currentTime+.01);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+dur);o.connect(g);g.connect(master);o.start();o.stop(ctx.currentTime+dur+.02);
+}
+$('start').onclick=()=>{started=true;$('intro').style.display='none';audioStart();beep(660,.15)};
+$('sound').onclick=()=>{soundOn=!soundOn;$('sound').textContent=soundOn?'🔊 Âm thanh':'🔇 Âm thanh';if(soundOn){audioStart();beep(660,.12)}};
+$('soundBtn').onclick=()=>{$('sound').click()};
+document.querySelectorAll('.hit').forEach(el=>el.onclick=()=>{
+ if(!started||el.classList.contains('selected')||tries<=0)return;
+ tries--;$('tries').textContent=tries;el.classList.add('selected');
+ if(el.dataset.good==='1'){found++;score+=100;$('found').textContent=found+'/3';$('score').textContent=score;msg.className='ok';msg.textContent='✅ Chính xác! '+el.dataset.name+'.';beep(880,.18);
+  if(found===3){score+=tries*10;$('score').textContent=score;setTimeout(()=>{$('finalScore').textContent=score+' điểm';$('finish').classList.add('show');beep(1046,.35)},500)}
+ }else{msg.className='bad';msg.textContent='❌ Chưa đúng: '+el.dataset.name+'. Hành vi này không phải lỗi cần tìm.';beep(180,.16)}
+});
+$('hint').onclick=()=>{if(!started)return;if(found===0)msg.textContent='💡 Gợi ý: Có một ô tô đang đứng ngay trên vạch qua đường; một xe máy đang quay đầu gần biển CẤM QUAY ĐẦU; còn một lỗi nằm ở vị trí của người/xe khác.';else if(found===1)msg.textContent='💡 Còn 2 lỗi. Kiểm tra biển CẤM QUAY ĐẦU và chiếc xe đang đứng trên vạch.';else msg.textContent='💡 Còn 1 lỗi. Tìm đối tượng chưa được khoanh sáng.';beep(440,.1)};
+$('again').onclick=()=>location.reload();
+</script>
+</body>
+</html>
