@@ -389,10 +389,10 @@
 <div class="body">
 <p class="short vi">Công dân có thể thực hiện thủ tục đăng ký thường trú, đăng ký tạm trú trực tuyến trên ứng dụng VNeID bằng tài khoản định danh điện tử mức 2.</p>
 <p class="short ede">Mnuih ƀuôn sang dưi ngă hră m’ar hưn akâo bhiăn hdĭp dah mâo đih đăm trực tuyến hŏng ứng dụng VNeID hŏng tài khoản định danh Hnơ̆ng 2.</p>
-<a aria-label="Mở video hướng dẫn" class="video direct-video vi" href="https://youtu.be/5SxvtdrBt0E" rel="noopener noreferrer" target="_blank"><div class="play">▶</div>
+<div aria-label="Mở video hướng dẫn" class="video vi" data-vi-url="https://www.youtube.com/embed/5SxvtdrBt0E?rel=0&autoplay=1&playsinline=1" data-ede-url="" role="button" tabindex="0"><div class="play">▶</div>
 <strong class="vi">VIDEO HƯỚNG DẪN 9:16</strong>
-<small class="vi">Các bước đăng ký thường trú / tạm trú trên VNeID</small>
-</a>
+<small class="vi">Chạm để xem video hướng dẫn bằng Tiếng Việt</small>
+</div>
 <div aria-label="Mở video hướng dẫn" class="video ede-video" data-ede-url="" data-vi-url="" role="button" tabindex="0"><div class="play">▶</div>
 <strong class="ede">VIDEO BI HRIĂM (9:16)</strong>
 <small class="ede">Čhĭh kơ bi hriăm ti Ê-đê</small>
@@ -916,7 +916,7 @@
   function openVideo(box){
     const vi=langVi.checked;
     const url=box.getAttribute(vi?'data-vi-url':'data-ede-url')||'';
-    title.textContent=vi?'VIDEO HƯỚNG DẪN – TIẾNG KINH':'VIDEO HƯỚNG DẪN – TIẾNG Ê-ĐÊ';
+    title.textContent=vi?'VIDEO HƯỚNG DẪN – TIẾNG VIỆT':'VIDEO HƯỚNG DẪN – TIẾNG Ê-ĐÊ';
     const src=embed(url);
     if(src){
       frame.className='video-frame';
